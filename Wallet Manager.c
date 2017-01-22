@@ -15,13 +15,13 @@ int main()
     int Selection1,Selection2,Selection3;            //declaring some variable
     int TmpVar1,TmpVar2,TmpVar3;
     int SystemPass;
-    char again1,again2;
+    char again1,again2,fls;
 
     SystemPass=1234;
     again1='y';
     again2='y';
 
-    while(again1=='y')
+    while(1)
     {
         printf("Please Enter The System Password: ");           //asking user for system password
         scanf("%d",&TmpVar1);                                //put user password in TmpVar1 variable
@@ -41,18 +41,22 @@ int main()
                 {
                 case '1':
                     DBBLf();                //if user press 1 then program will search DBBLf function and take command from there
+                    fls=getche();
                     break;
 
                 case '2':
                     Rocketf();                    //if user press 2 then program will search Rocketf function and take command from there
+                    fls=getche();
                     break;
 
                 case '3':                 //if user press 3 then program will search bkashf function and take command from there
+                    fls=getche();
                     bKashf();
                     break;
 
                 case '4':
                     Payoneerf();              //if user press 4 then program will search Payoneerf function and take command from there
+                    fls=getche();
                     break;
                 }
 
@@ -67,8 +71,9 @@ int main()
 
         else
         {
-            printf("Sorry,Password was incorrect.Would you like to try again?(y/n)");          //if the user input password isn't valid then show an error message
-            again1=getche();
+            printf("Sorry,Password was incorrect.Press any key to try again");          //if the user input password isn't valid then show an error message
+            fls=getche();
+            system("cls");
         }
     }
     return 0;
@@ -84,12 +89,17 @@ void DBBLf()                      //DBBLf function
     printf("Which act you want to play?\n 1.View Balance\n 2.Add Balance\n 3.Cut Balance\n");
     Selection=getche();                     //asking user what he/she wants to do and take input
 
+    system("cls");
+
     switch(Selection)
     {
     case '1':
+        fseek(fp,-sizeof(DBBL.AccBal),SEEK_CUR);
+        //rewind(fp);
         fscanf(fp,"%d",&DBBL.AccBal);                      //read input from file and put that to DBBL.AccBal structure variable
         printf("Your DBBL balance is %d",DBBL.AccBal);               //show the current dbbl balance
-        break;               //break the switching
+        fclose(fp);
+        break;                                                 //break the switching
 
     case '2':
         fscanf(fp,"%d",&DBBL.AccBal);                  //reading data from file
@@ -98,6 +108,7 @@ void DBBLf()                      //DBBLf function
         DBBL.AccBal+=TmpVar;
         fseek(fp,-sizeof(DBBL.AccBal),SEEK_CUR);                 //move the cursor position where DBBL.AccBal is situated
         fprintf(fp,"%d",DBBL.AccBal);                        //update the balance
+        printf("Your balance is updated successfully.Press any key to continue");
         break;
 
     case '3':
@@ -107,6 +118,7 @@ void DBBLf()                      //DBBLf function
         DBBL.AccBal-=TmpVar;
         fseek(fp,-sizeof(DBBL.AccBal),SEEK_CUR);             //move the cursor position where DBBL.AccBal is situated
         fprintf(fp,"%d",DBBL.AccBal);                              //update the balance
+        printf("Your balance is updated successfully.Press any key to continue");
         break;
     }
 }
